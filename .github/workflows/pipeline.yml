@@ -47,3 +47,34 @@ jobs:
             branch:${{ env.branch }}
           tags: |
             ghcr.io/jfv-orange/test-template:safe${{ env.imagetag }}
+
+
+
+
+      - uses: actions/checkout@v4
+      - name: Run Hadolint
+        uses: hadolint/hadolint-action@v3
+        with:
+          dockerfile: ./Dockerfile
+          format: sarif
+          output-file: hadolint.sarif
+          no-fail: true
+      - name: Generate Hadolint badge
+        uses: /abcdesktopio/workflow-lib/hadolint-badge@v1
+        with:
+          result-file: hadolint.sarif
+      - name: Run Trivy
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          image-ref: "docker.io/my-org/my-app:${{ github.sha }}"
+          format: json
+          output: trivy.json
+          severity: CRITICAL,HIGH
+      - name: Generate Trivy badge
+        uses: /abcdesktopio/workflow-lib/trivy-badge@v1
+        with:
+          result-file: trivy.json
+
+      - uses: /abcdesktopio/workflow-lib/publish-pages@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
