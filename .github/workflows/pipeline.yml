@@ -42,8 +42,8 @@ jobs:
           platforms: linux/amd64
           context: .
           file: Dockerfile
-          push: true
+          push: false
           build-args: |
             branch:${{ env.branch }}
           tags: |
-            ghcr.io/jfv-orange/test-template/test-template:safe${{ env.imagetag }}
+            ghcr.io/jfv-orange/test-template:safe${{ env.imagetag }}
