@@ -51,18 +51,18 @@ jobs:
 
 
 
-      - uses: actions/checkout@v4
-      - name: Run Hadolint
-        uses: hadolint/hadolint-action@v3
-        with:
-          dockerfile: ./Dockerfile
-          format: sarif
-          output-file: hadolint.sarif
-          no-fail: true
-      - name: Generate Hadolint badge
-        uses: /abcdesktopio/workflow-lib/hadolint-badge@v1
-        with:
-          result-file: hadolint.sarif
+      # - uses: actions/checkout@v4
+      # - name: Run Hadolint
+      #   uses: hadolint/hadolint-action@v3
+      #   with:
+      #     dockerfile: ./Dockerfile
+      #     format: sarif
+      #     output-file: hadolint.sarif
+      #     no-fail: true
+      # - name: Generate Hadolint badge
+      #   uses: jfv-orange/template/hadolint-badge@v1
+      #   with:
+      #     result-file: hadolint.sarif
       - name: Run Trivy
         uses: aquasecurity/trivy-action@0.20.0
         with:
@@ -71,10 +71,10 @@ jobs:
           output: trivy.json
           severity: CRITICAL,HIGH
       - name: Generate Trivy badge
-        uses: /abcdesktopio/workflow-lib/trivy-badge@v1
+        uses: jfv-orange/template/trivy-badge@v1
         with:
           result-file: trivy.json
 
-      - uses: /abcdesktopio/workflow-lib/publish-pages@v1
+      - uses: jfv-orange/template/publish-pages@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
